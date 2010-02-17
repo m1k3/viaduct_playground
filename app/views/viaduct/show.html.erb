@@ -1,0 +1,20 @@
+<% title "Person" %>
+
+<p>
+  <strong>Name:</strong>
+  <%=h @person.name %>
+</p>
+<p>
+  <strong>Address:</strong>
+  <%=h @person.address %>
+</p>
+<p>
+  <strong>Phone:</strong>
+  <%=h @person.phone %>
+</p>
+
+<p>
+  <%= link_to "Edit", edit_person_path(@person) %> |
+  <%= link_to "Destroy", @person, :confirm => 'Are you sure?', :method => :delete %> |
+  <%= link_to "View All", people_path %>
+</p>

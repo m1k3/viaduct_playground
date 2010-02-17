@@ -1,0 +1,21 @@
+<% title "People" %>
+
+<table>
+  <tr>
+	<% for ld in @list_display %>
+		<th><%= ld %></th>
+	<% end %>
+  </tr>
+  <% for model in @models %>
+	<tr>
+	<% for ld in @list_display %>
+		<td><%=h model.read_attribute(ld) %></td>
+		<td><%= link_to "Show", model %></td>
+		<td><%= link_to "Edit", instance_eval('edit_person_path(model)') %></td>
+		<td><%= link_to "Destroy", model, :confirm => 'Are you sure?', :method => :delete %></td>
+	<% end %>
+	</tr>
+  <% end %>
+</table>
+
+<p><%= link_to "New Person", new_person_path %></p>
