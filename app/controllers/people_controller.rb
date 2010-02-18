@@ -1,6 +1,6 @@
 class PeopleController < ApplicationController
   include Viaduct::Scaffolding
-
+  
   def fields
     [:name, :address]
   end

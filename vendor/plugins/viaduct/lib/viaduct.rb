@@ -1,6 +1,11 @@
 # Viaduct
 module Viaduct
   module Scaffolding
+    
+    def self.included(base)
+      base.append_view_path(File.join(RAILS_ROOT, 'vendor', 'plugins', 'viaduct', 'lib', 'app', 'views'))
+    end
+    
     def index
       @list_display = list_display
       @models = model_class.all
