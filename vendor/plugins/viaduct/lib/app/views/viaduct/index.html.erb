@@ -1,13 +1,13 @@
 <table>
   <tr>
-	<% for ld in @list_display %>
-		<th><%= ld %></th>
+	<% for field in @list_display %>
+		<th><%=h field %></th>
 	<% end %>
   </tr>
   <% for model in @models %>
 	<tr>
-	<% for ld in @list_display %>
-		<td><%=h model.read_attribute(ld) %></td>
+	<% for field in @list_display %>
+		<td><%=h model.send(field) %></td>
 	<% end %>
 	<td><%= link_to "Show", model %></td>
 	<td><%= link_to "Edit", instance_eval("edit_#{model.class.to_s.gsub(/Controller$/, '').downcase}_path(model)") %></td>
