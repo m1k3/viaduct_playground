@@ -1,5 +1,3 @@
-<% title "New Person" %>
-
 <%= render :partial => 'viaduct/form' %>
 
-<p><%= link_to "Back to List", people_path %></p>
+<p><%= link_to "Back to List", instance_eval("#{@model.class.to_s.gsub(/Controller$/, '').downcase.pluralize}_path") %></p>

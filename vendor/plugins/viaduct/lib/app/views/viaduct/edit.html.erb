@@ -1,8 +1,6 @@
-<% title "Edit Person" %>
-
 <%= render :partial => 'viaduct/form' %>
 
 <p>
   <%= link_to "Show", @model %> |
-  <%= link_to "View All", people_path %>
+  <%= link_to "View All", instance_eval("#{@model.class.to_s.gsub(/Controller$/, '').downcase.pluralize}_path") %>
 </p>

@@ -1,5 +1,3 @@
-<% title "People" %>
-
 <table>
   <tr>
 	<% for ld in @list_display %>
@@ -10,12 +8,12 @@
 	<tr>
 	<% for ld in @list_display %>
 		<td><%=h model.read_attribute(ld) %></td>
-		<td><%= link_to "Show", model %></td>
-		<td><%= link_to "Edit", instance_eval("edit_#{model.class.to_s.gsub(/Controller$/, '').downcase}_path(model)") %></td>
-		<td><%= link_to "Destroy", model, :confirm => 'Are you sure?', :method => :delete %></td>
 	<% end %>
+	<td><%= link_to "Show", model %></td>
+	<td><%= link_to "Edit", instance_eval("edit_#{model.class.to_s.gsub(/Controller$/, '').downcase}_path(model)") %></td>
+	<td><%= link_to "Destroy", model, :confirm => 'Are you sure?', :method => :delete %></td>
 	</tr>
   <% end %>
 </table>
 
-<p><%= link_to "New #{@model_class}", new_person_path %></p>
+<p><%= link_to "New #{@model_class}", instance_eval("new_#{model.class.to_s.gsub(/Controller$/, '').downcase}_path") %></p>

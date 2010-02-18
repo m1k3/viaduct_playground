@@ -1,20 +1,12 @@
-<% title "Person" %>
-
-<p>
-  <strong>Name:</strong>
-  <%=h @model.name %>
-</p>
-<p>
-  <strong>Address:</strong>
-  <%=h @model.address %>
-</p>
-<p>
-  <strong>Phone:</strong>
-  <%=h @model.phone %>
-</p>
+<% @fields.each do |field| %>
+	<p>
+	  <strong><%= field %>:</strong>
+	  <%=h instance_eval("@model.#{field}") %>
+	</p>
+<% end %>
 
 <p>
   <%= link_to "Edit", instance_eval("edit_#{@model.class.to_s.gsub(/Controller$/, '').downcase}_path(@model)") %> |
   <%= link_to "Destroy", @person, :confirm => 'Are you sure?', :method => :delete %> |
-  <%= link_to "View All", people_path %>
+  <%= link_to "View All", instance_eval("#{@model.class.to_s.gsub(/Controller$/, '').downcase.pluralize}_path") %>
 </p>

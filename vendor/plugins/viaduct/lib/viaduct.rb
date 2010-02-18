@@ -15,23 +15,26 @@ module Viaduct
  
     def new
       @model = model_class.new
+      @fields = fields
       render :template => 'viaduct/new'
     end
     
     def show
        @model = model_class.find(params[:id])
+       @fields = fields
        render :template => 'viaduct/show'
     end
  
     def edit
       @model = model_class.find(params[:id])
+      @fields = fields
       render :template => 'viaduct/edit'
     end
  
     def create
       @model = model_class.new(params[:person])
       if @model.save
-        flash[:notice] = 'Person was successfully created.'
+        flash[:notice] = "#{model_class} was successfully created."
         redirect_to(@model)
       else
         render :action => "new"
@@ -42,7 +45,7 @@ module Viaduct
       @model = model_class.find(params[:id])
  
       if @model.update_attributes(params[:person])
-        flash[:notice] = 'Person was successfully updated.'
+        flash[:notice] = "#{model_class} was successfully updated."
         redirect_to(@model)
       else
         render :action => "edit"
