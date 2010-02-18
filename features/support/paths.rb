@@ -10,6 +10,12 @@ module NavigationHelpers
     
     when /the home\s?page/
       '/'
+      
+    when /the people admin page/
+      'people'
+    
+    when /the new person page/
+      'people/new'
     
     # Add more mappings here.
     # Here is an example that pulls values out of the Regexp:
