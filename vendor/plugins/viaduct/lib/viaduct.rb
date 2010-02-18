@@ -3,21 +3,29 @@ module Viaduct
   module Scaffolding
     
     def self.included(base)
-      base.append_view_path(File.join(RAILS_ROOT, 'vendor', 'plugins', 'viaduct', 'lib', 'app', 'views'))
+      base.append_view_path(File.join(File.dirname(__FILE__), 'app', 'views'))
     end
     
     def index
       @list_display = list_display
       @models = model_class.all
+      @model_class = model_class
       render :template => 'viaduct/index'
     end
  
     def new
       @model = model_class.new
+      render :template => 'viaduct/new'
+    end
+    
+    def show
+       @model = model_class.find(params[:id])
+       render :template => 'viaduct/show'
     end
  
     def edit
       @model = model_class.find(params[:id])
+      render :template => 'viaduct/edit'
     end
  
     def create

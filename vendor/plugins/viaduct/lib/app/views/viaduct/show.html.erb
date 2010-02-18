@@ -2,19 +2,19 @@
 
 <p>
   <strong>Name:</strong>
-  <%=h @person.name %>
+  <%=h @model.name %>
 </p>
 <p>
   <strong>Address:</strong>
-  <%=h @person.address %>
+  <%=h @model.address %>
 </p>
 <p>
   <strong>Phone:</strong>
-  <%=h @person.phone %>
+  <%=h @model.phone %>
 </p>
 
 <p>
-  <%= link_to "Edit", edit_person_path(@person) %> |
+  <%= link_to "Edit", instance_eval("edit_#{@model.class.to_s.gsub(/Controller$/, '').downcase}_path(@model)") %> |
   <%= link_to "Destroy", @person, :confirm => 'Are you sure?', :method => :delete %> |
   <%= link_to "View All", people_path %>
 </p>
