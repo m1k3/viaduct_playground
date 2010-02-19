@@ -5,6 +5,13 @@
 	</p>
 <% end %>
 
+<% @associations.each do |association| %>
+	<p>
+	  <strong><%= association.class_name %>:</strong>
+	  <%=h @model.send(association.class_name.downcase) %>
+	</p>
+<% end %>
+
 <p>
   <%= link_to "Edit", instance_eval("edit_#{@model.class.to_s.gsub(/Controller$/, '').downcase}_path(@model)") %> |
   <%= link_to "Destroy", @model, :confirm => 'Are you sure?', :method => :delete %> |
