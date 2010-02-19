@@ -60,7 +60,7 @@ module Viaduct
  
     protected
       def model_class
-        ActiveSupport::Inflector::classify(controller_name).constantize
+        controller_name.classify.constantize
       end
        
       def list_display
