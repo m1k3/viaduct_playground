@@ -65,7 +65,7 @@ module Viaduct
       def update_associations(model)
         model_class.reflect_on_all_associations.each do |association|
           model.send("#{association.class_name.downcase}=".to_sym,
-            AudioRecording.find(params[model_class.class_name.downcase.to_sym][association.class_name.downcase.to_sym]))
+            association.class_name.constantize.find(params[model_class.class_name.downcase.to_sym][association.class_name.downcase.to_sym]))
         end
         model.save
       end

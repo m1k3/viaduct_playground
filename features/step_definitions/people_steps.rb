@@ -1,6 +1,6 @@
 Given /^the following people exist$/ do |table|
   table.hashes.each  do |hash|
-    Person.create(hash)
+    Person.create(hash).comments.create(:title => 'title1')
   end
 end
 
