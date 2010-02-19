@@ -71,7 +71,7 @@ module Viaduct
       end
     
       def model_class
-        ActiveSupport::Inflector::classify(self.class.to_s.gsub(/Controller$/, '')).constantize
+        controller_name.classify.constantize
       end
        
       def list_display
