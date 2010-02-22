@@ -28,18 +28,14 @@ Background: people exist
 		And I press "submit"
 		Then I should see "Person was successfully created"
 		And I should see "Adam"
-		And I should see "1 infinite loop"
-		And I should see "123456"
 		And I should have 3 person/people
 	
 	Scenario: Edit a person
-		When I follow "Edit" within "html>body>div>table tr:nth-of-type(2)"
+		When I follow "Edit" within "table tr:nth-of-type(2)"
 		And I fill in "name" with "Adam"
 		And I fill in "address" with "3 infinite loop"
 		And I fill in "phone" with "45612987"
 		And I press "submit"
 		Then I should see "Person was successfully updated."
 		And I should see "Adam"
-		And I should see "3 infinite loop"
-		And I should see "45612987"
 		And I should have 2 person/people

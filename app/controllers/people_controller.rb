@@ -8,4 +8,8 @@ class PeopleController < ApplicationController
   def list_display
     [:name]
   end
+
+  def actions
+    [:destroy]
+  end
 end

@@ -79,3 +79,17 @@ a {
   font-size: 12px;
   list-style: disc;
 }
+
+table {
+    border-collapse: collapse;    
+}
+
+table td, table th {
+    border: 1px solid #ccc;
+    padding: 5px;
+}
+
+input[type="checkbox"] {
+    cursor: pointer;
+    cursor: hand;
+}
