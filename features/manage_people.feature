@@ -1,5 +1,4 @@
-Feature: Testing viaduct on a simple example with no relationships
-
+Feature: Scaffold for a model with no relationships
 	So that I can see that viaduct works
 	As an admin
 	I want to see people admin pages
@@ -9,9 +8,9 @@ Background: people exist
 	 | name | address         | phone  |
 	 | John | 1 infinite loop | 123456 |
 	 | Peter | 2 infinite loop | 45678913 |
+    And I am on the people admin page
 	
-	Scenario: Show index page
-		And I am on the people admin page
+	Scenario: List people
 		Then I should see "name"
 		And I should see "John"
 		And I should see "Peter"
@@ -21,8 +20,8 @@ Background: people exist
 		And I should not see "123456"
 		And I should not see "456789123"
 	
-	Scenario: Create a new Person
-		Given I am on the new person page
+	Scenario: Create a new person
+		When I follow "New Person"
 		When I fill in "name" with "Adam"
 		And I fill in "address" with "1 infinite loop"
 		And I fill in "phone" with "123456"
@@ -33,8 +32,7 @@ Background: people exist
 		And I should see "123456"
 		And I should have 3 person/people
 	
-	Scenario: Edit a Person
-		Given I am on the people admin page
+	Scenario: Edit a person
 		When I follow "Edit" within "html>body>div>table tr:nth-of-type(2)"
 		And I fill in "name" with "Adam"
 		And I fill in "address" with "3 infinite loop"
