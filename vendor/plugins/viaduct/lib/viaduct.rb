@@ -17,14 +17,14 @@ module Viaduct
     def new
       @model = model_class.new
       @fields = fields
-      @associations = model_class.reflect_on_all_associations
+      @has_many = model_class.reflect_on_all_associations.delete_if { |r| r.macro != :has_many }
       render :template => 'viaduct/new'
     end
 
     def edit
       @model = model_class.find(params[:id])
       @fields = fields
-      @associations = model_class.reflect_on_all_associations
+      @has_many = model_class.reflect_on_all_associations.delete_if { |r| r.macro != :has_many }
       render :template => 'viaduct/edit'
     end
 
@@ -35,7 +35,7 @@ module Viaduct
         redirect_to(:action => "index")
       else
         @fields = fields
-        @associations = model_class.reflect_on_all_associations
+        @has_many = model_class.reflect_on_all_associations.delete_if { |r| r.macro != :has_many }
         render :template => 'viaduct/new'
       end
     end
@@ -71,9 +71,13 @@ module Viaduct
 
     protected
       def update_associations(model)
-        model_class.reflect_on_all_associations.each do |association|
-          model.send("#{association.class_name.downcase}=".to_sym,
-            association.class_name.constantize.find(params[model_class.class_name.downcase.to_sym][association.class_name.downcase.to_sym]))
+        associations = model_class.reflect_on_all_associations
+        has_many = associations.delete_if { |r| r.macro != :has_many }
+        association_items = []
+        
+        has_many.each do |association|
+          association_items = association.klass.find(params["#{association.name}_ids".to_sym]) if params["#{association.name}_ids".to_sym]
+          model.send("#{association.name}=", association_items)
         end
         model.save
       end

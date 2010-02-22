@@ -4,10 +4,14 @@ Feature: Scaffold for a model with no relationships
 	I want to see people admin pages
 
 Background: people exist
-	Given the following people exist
-	 | name | address         | phone  |
-	 | John | 1 infinite loop | 123456 |
+	Given the following "people" exist
+	 | name  | address         | phone    |
+	 | John  | 1 infinite loop | 123456   |
 	 | Peter | 2 infinite loop | 45678913 |
+	And the following "comments" exist
+	 | title   | content   |
+	 | title 1 | content 1 |
+	 | title 2 | content 2 |
     And I am on the people admin page
 	
 	Scenario: List people
@@ -45,3 +49,10 @@ Background: people exist
 		And I press "submit"
 		And I should see "Name can't be blank"
 		And I should see "Address can't be blank"
+
+	Scenario: Edit a person and assign a comment through has_many
+		When I follow "Edit" within "table tr:nth-of-type(2)"
+		And I check "comments_0"
+		And I press "submit"
+		Then I should see "Person was successfully updated."
+		And I should have 2 person/people

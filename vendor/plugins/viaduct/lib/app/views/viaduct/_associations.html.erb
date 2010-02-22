@@ -1,6 +1,0 @@
-<% @associations.each do |association| %>
-	<p>
-	  <%= f.label association.class_name.downcase.to_sym %><br />
-	  <%= f.select association.class_name.downcase.to_sym, association.class_name.constantize.all.collect {|a| [ a.title, a.id ]}, {:selected => @model.comment}  %>
-	</p>
-<% end %>

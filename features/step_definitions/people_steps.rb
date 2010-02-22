@@ -1,6 +1,6 @@
-Given /^the following people exist$/ do |table|
+Given /^the following "([^\"]*)" exist$/ do |model, table|
   table.hashes.each  do |hash|
-    Person.create(hash)
+    model.classify.constantize.create(hash)
   end
 end
 

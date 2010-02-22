@@ -4,7 +4,7 @@ Feature: Custom bulk actions
 	I want to be able to make actions to multiple items simultaneously
 
   Background:
-	Given the following people exist
+	Given the following "people" exist
 	 | name | address         | phone  |
 	 | John | 1 infinite loop | 123456 |
 	 | Peter | 2 infinite loop | 45678913 |
