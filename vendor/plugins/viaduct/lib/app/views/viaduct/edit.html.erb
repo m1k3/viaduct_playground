@@ -2,5 +2,5 @@
 
 <p>
   <%= link_to "Show", @model %> |
-  <%= link_to "View All", instance_eval("#{@model.class.to_s.gsub(/Controller$/, '').downcase.pluralize}_path") %>
+  <%= link_to "View All", :action => "index" %>
 </p>

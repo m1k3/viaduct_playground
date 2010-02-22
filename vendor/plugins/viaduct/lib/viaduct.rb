@@ -58,7 +58,11 @@ module Viaduct
     def destroy
       @model = model_class.find(params[:id])
       @model.destroy
-      redirect_to(people_url)
+      redirect_to(:action => "index")
+    end
+
+    def edit_url(model)
+      
     end
  
     protected

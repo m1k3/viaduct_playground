@@ -13,7 +13,7 @@
 <% end %>
 
 <p>
-  <%= link_to "Edit", instance_eval("edit_#{@model.class.to_s.gsub(/Controller$/, '').downcase}_path(@model)") %> |
+  <%= link_to "Edit", :action => "edit", :id => @model.id %> |
   <%= link_to "Destroy", @model, :confirm => 'Are you sure?', :method => :delete %> |
-  <%= link_to "View All", instance_eval("#{@model.class.to_s.gsub(/Controller$/, '').downcase.pluralize}_path") %>
+  <%= link_to "View All", :action => "index" %>
 </p>

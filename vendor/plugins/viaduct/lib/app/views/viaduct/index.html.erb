@@ -10,10 +10,10 @@
 		<td><%=h model.send(field) %></td>
 	<% end %>
 	<td><%= link_to "Show", model %></td>
-	<td><%= link_to "Edit", instance_eval("edit_#{model.class.to_s.gsub(/Controller$/, '').downcase}_path(model)") %></td>
+	<td><%= link_to "Edit", :action => "edit", :id => model %></td>
 	<td><%= link_to "Destroy", model, :confirm => 'Are you sure?', :method => :delete %></td>
 	</tr>
   <% end %>
 </table>
 
-<p><%= link_to "New #{@model_class}", instance_eval("new_#{model.class.to_s.gsub(/Controller$/, '').downcase}_path") %></p>
+<p><%= link_to "New #{@model_class}", :action => "new" %></p>
