@@ -60,10 +60,6 @@ module Viaduct
       @model.destroy
       redirect_to(:action => "index")
     end
-
-    def edit_url(model)
-      
-    end
  
     protected
       def update_associations(model)
