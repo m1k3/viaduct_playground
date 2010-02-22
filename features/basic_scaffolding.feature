@@ -39,3 +39,9 @@ Background: people exist
 		Then I should see "Person was successfully updated."
 		And I should see "Adam"
 		And I should have 2 person/people
+
+    Scenario: Invalid person creation
+        When I follow "New Person"
+		And I press "submit"
+		And I should see "Name can't be blank"
+		And I should see "Address can't be blank"

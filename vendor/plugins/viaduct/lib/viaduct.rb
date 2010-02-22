@@ -30,21 +30,25 @@ module Viaduct
 
     def create
       @model = model_class.new(params[model_class.class_name.downcase.to_sym])
-      if @model.save && update_associations(@model)
+      if @model.valid? && @model.save && update_associations(@model)
         flash[:notice] = "#{model_class} was successfully created."
         redirect_to(:action => "index")
       else
-        render :action => "new"
+        @fields = fields
+        @associations = model_class.reflect_on_all_associations
+        render :template => 'viaduct/new'
       end
     end
 
     def update
       @model = model_class.find(params[:id])
-      if @model.update_attributes(params[model_class.class_name.downcase.to_sym]) && update_associations(@model)
+      if @model.valid? && @model.update_attributes(params[model_class.class_name.downcase.to_sym]) && update_associations(@model)
         flash[:notice] = "#{model_class} was successfully updated."
         redirect_to(:action => "index")
       else
-        render :action => "edit"
+        @fields = fields
+        @associations = model_class.reflect_on_all_associations
+        render :template => 'viaduct/edit'
       end
     end
 

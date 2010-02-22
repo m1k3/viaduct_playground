@@ -1,3 +1,5 @@
 class Person < ActiveRecord::Base
-  attr_accessible :name, :address, :phone
+  validates_presence_of :name, :address
+
+  attr_accessible :name, :address, :phone  
 end
