@@ -8,9 +8,16 @@ module Viaduct
 
     def index
       @list_display = list_display
-      @models = model_class.all
       @model_class = model_class
+      @search_fields = search_fields
       @actions = actions
+      if !params[:q].blank?
+        @query = params[:q]
+        @models = search(params[:q])      
+      else
+        @models = model_class.all
+      end
+
       render :template => 'viaduct/index'
     end
  
@@ -96,6 +103,15 @@ module Viaduct
 
       def actions
         [:destroy]
+      end
+
+      def search_fields
+        []
+      end
+
+      def search(query)
+        condition = search_fields.map {|field| "`#{field}` LIKE :query"}.join(" OR ")
+        model_class.all(:conditions => [condition, {:query => "%#{query}%"}])
       end
   end
 end

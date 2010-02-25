@@ -10,7 +10,10 @@ module NavigationHelpers
     
     when /the home\s?page/
       '/'
-      
+
+    when /the articles admin page/
+      'articles'
+
     when /the people admin page/
       'people'
     
