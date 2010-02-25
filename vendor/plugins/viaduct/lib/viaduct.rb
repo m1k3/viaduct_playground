@@ -23,13 +23,11 @@ module Viaduct
  
     def new
       @model = model_class.new
-      @has_many = model_class.reflect_on_all_associations.delete_if { |r| r.macro != :has_many }
       render :template => 'viaduct/new'
     end
 
     def edit
       @model = model_class.find(params[:id])
-      @has_many = model_class.reflect_on_all_associations.delete_if { |r| r.macro != :has_many }
       render :template => 'viaduct/edit'
     end
 
