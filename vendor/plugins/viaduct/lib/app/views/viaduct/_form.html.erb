@@ -1,7 +1,7 @@
 <% form_for @model do |f| %>
   <%= f.error_messages %>
 
-  <% @fields.each do |field| %>
+  <% @definition.fields.each do |field| %>
 	<p>
 	  <%= f.label field.to_sym %><br />
 	  <%= f.text_field field.to_sym %>

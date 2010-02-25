@@ -1,15 +1,15 @@
-<% unless @search_fields.empty? %>
+<% unless @definition.search_fields.empty? %>
     <% form_tag url_for(:action => "index"), :method => :get do -%>
         <%= label_tag(:q, "Search") %>: <%= text_field_tag(:q, @query) %> <%= submit_tag "Search", {:name => nil} %>
     <% end %>
 <% end %>
 <% if @models.empty? %>
     <% if @query.blank? %>
-        <p>No <%= @model_class.to_s.pluralize.downcase %> found. <%= link_to "Create new #{@model_class.to_s.downcase}", :action => "new" %>.</p>
+        <p>No <%= @definition.model_class.to_s.pluralize.downcase %> found. <%= link_to "Create new #{@definition.model_class.to_s.downcase}", :action => "new" %>.</p>
     <% else %>
-        <p>No matching <%= @model_class.to_s.pluralize.downcase %> found. <%= link_to "List all #{@model_class.to_s.pluralize.downcase}", :action => "index" %>.</p>
+        <p>No matching <%= @definition.model_class.to_s.pluralize.downcase %> found. <%= link_to "List all #{@definition.model_class.to_s.pluralize.downcase}", :action => "index" %>.</p>
     <% end %>
 <% else %>
     <%= render :partial => "viaduct/results_table" %>
-    <p><%= link_to "New #{@model_class}", :action => "new" %></p>
+    <p><%= link_to "New #{@definition.model_class}", :action => "new" %></p>
 <% end %>

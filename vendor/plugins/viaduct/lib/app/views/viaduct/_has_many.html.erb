@@ -1,4 +1,4 @@
-<% @has_many.each do |association| %>
+<% @definition.model_class.reflect_on_all_associations(:has_many).each do |association| %>
 	<p>
 	  <%= f.label association.name.to_sym %><br />
 	  <% association.klass.all.each_with_index do |association_item, index| %>

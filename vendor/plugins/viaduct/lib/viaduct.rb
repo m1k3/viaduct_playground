@@ -1,16 +1,16 @@
 # Viaduct
 module Viaduct
   module Scaffolding
-    
     def self.included(base)
       base.append_view_path(File.join(File.dirname(__FILE__), 'app', 'views'))
+      base.before_filter :assign_definition
+    end
+
+    def assign_definition
+      @definition = self
     end
 
     def index
-      @list_display = list_display
-      @model_class = model_class
-      @search_fields = search_fields
-      @actions = actions
       if !params[:q].blank?
         @query = params[:q]
         @models = search(params[:q])      
@@ -23,14 +23,12 @@ module Viaduct
  
     def new
       @model = model_class.new
-      @fields = fields
       @has_many = model_class.reflect_on_all_associations.delete_if { |r| r.macro != :has_many }
       render :template => 'viaduct/new'
     end
 
     def edit
       @model = model_class.find(params[:id])
-      @fields = fields
       @has_many = model_class.reflect_on_all_associations.delete_if { |r| r.macro != :has_many }
       render :template => 'viaduct/edit'
     end
@@ -41,8 +39,6 @@ module Viaduct
         flash[:notice] = "#{model_class} was successfully created."
         redirect_to(:action => "index")
       else
-        @fields = fields
-        @has_many = model_class.reflect_on_all_associations.delete_if { |r| r.macro != :has_many }
         render :template => 'viaduct/new'
       end
     end
@@ -53,8 +49,6 @@ module Viaduct
         flash[:notice] = "#{model_class} was successfully updated."
         redirect_to(:action => "index")
       else
-        @fields = fields
-        @associations = model_class.reflect_on_all_associations
         render :template => 'viaduct/edit'
       end
     end
@@ -76,6 +70,26 @@ module Viaduct
       redirect_to(:action => "index")
     end
 
+    def model_class
+      controller_name.classify.constantize
+    end
+
+    def list_display
+      fields
+    end
+
+    def fields
+      model_class.columns.reject(&:primary).collect(&:name)
+    end
+
+    def actions
+      [:destroy]
+    end
+
+    def search_fields
+      []
+    end    
+
     protected
       def update_associations(model)
         associations = model_class.reflect_on_all_associations
@@ -88,27 +102,8 @@ module Viaduct
         end
         model.save
       end
-    
-      def model_class
-        controller_name.classify.constantize
-      end
 
-      def list_display
-        fields
-      end
-
-      def fields
-        model_class.columns.reject(&:primary).collect(&:name)
-      end
-
-      def actions
-        [:destroy]
-      end
-
-      def search_fields
-        []
-      end
-
+      # generic search
       def search(query)
         condition = search_fields.map {|field| "`#{field}` LIKE :query"}.join(" OR ")
         model_class.all(:conditions => [condition, {:query => "%#{query}%"}])

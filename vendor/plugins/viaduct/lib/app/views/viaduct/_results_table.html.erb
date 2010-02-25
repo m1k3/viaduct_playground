@@ -3,7 +3,7 @@
       <thead>
       <tr>
         <th></th>
-        <% for field in @list_display %>
+        <% for field in @definition.list_display %>
             <th><%= h field %></th>
         <% end %>
       </tr>
@@ -12,7 +12,7 @@
       <% @models.each_with_index do |model, index| %>
           <tr>
             <td id="<%= dom_id(model) %>"><%= check_box_tag("selected_models[]", model.id, false, {:id => "record_#{index}"}) %></td>
-            <% for field in @list_display %>
+            <% for field in @definition.list_display %>
                 <td><%= h model.send(field) %></td>
             <% end %>
             <td><%= link_to "Edit", :action => "edit", :id => model %></td>
@@ -20,7 +20,7 @@
       <% end %>
       </tbody>
     </table>
-    <% unless @actions.empty? -%>
-        <p>Action: <%= select("selected", "action", @actions, {:include_blank => "----------"}) %> <%= submit_tag "Go" %></p>
+    <% unless @definition.actions.empty? -%>
+        <p>Action: <%= select("selected", "action", @definition.actions, {:include_blank => "----------"}) %> <%= submit_tag "Go" %></p>
     <% end %>
 <% end %>
