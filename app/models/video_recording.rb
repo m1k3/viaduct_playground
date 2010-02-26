@@ -1,3 +1,3 @@
 class VideoRecording < ActiveRecord::Base
-  #has_one :person, :as => :recording
+  has_many :people, :as => :recording
 end
