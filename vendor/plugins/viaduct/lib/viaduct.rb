@@ -28,6 +28,7 @@ module Viaduct
 
     def edit
       @model = model_class.find(params[:id])
+      @belongs_to_search_field = belongs_to_search_fields.first
       render :template => 'viaduct/edit'
     end
 
@@ -67,6 +68,12 @@ module Viaduct
       end
       redirect_to(:action => "index")
     end
+    
+    def belongs_to_autocomplete
+      @matches = search(params[:query], params[:model].constantize, belongs_to_search_fields).first(7)
+      @belongs_to_search_fields = belongs_to_search_fields
+      render :layout => false, :template => 'viaduct/autocomplete'
+    end
 
     def model_class
       controller_name.classify.constantize
@@ -86,25 +93,33 @@ module Viaduct
 
     def search_fields
       []
-    end    
+    end
+    
+    def belongs_to_search_fields
+      [:name]
+    end
 
     protected
       def update_associations(model)
-        associations = model_class.reflect_on_all_associations
-        has_many = associations.delete_if { |r| r.macro != :has_many }
         association_items = []
         
-        has_many.each do |association|
+        model_class.reflect_on_all_associations(:has_many).each do |association|
           association_items = association.klass.find(params["#{association.name}_ids".to_sym]) if params["#{association.name}_ids".to_sym]
           model.send("#{association.name}=", association_items)
         end
+        
+        model_class.reflect_on_all_associations(:belongs_to).each do |association|
+          association_item = association.klass.first(:conditions => {belongs_to_search_fields.first => params["belongs_to_#{association.class_name}"]})
+          model.send("#{association.name}=", association_item)
+        end
+        
         model.save
       end
 
       # generic search
-      def search(query)
-        condition = search_fields.map {|field| "`#{field}` LIKE :query"}.join(" OR ")
-        model_class.all(:conditions => [condition, {:query => "%#{query}%"}])
+      def search(query, model = model_class, model_search_fields = search_fields)
+        condition = model_search_fields.map {|field| "`#{field}` LIKE :query"}.join(" OR ")
+        model.all(:conditions => [condition, {:query => "%#{query}%"}])
       end
   end
 end

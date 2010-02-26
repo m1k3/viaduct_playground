@@ -9,6 +9,7 @@
   <% end %>
 
   <%= render :partial => 'viaduct/has_many', :locals => {:f => f} %>
+  <%= render :partial => 'viaduct/belongs_to', :locals => {:f => f} %>
 
   <p><%= f.submit "Submit" %></p>
 <% end %>
