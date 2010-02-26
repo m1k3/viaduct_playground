@@ -96,7 +96,7 @@ module Viaduct
     end
     
     def belongs_to_search_fields
-      [:name]
+      []
     end
 
     protected
