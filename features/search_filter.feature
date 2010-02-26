@@ -9,7 +9,7 @@ Feature: Fulltext search filter
       | Mysql | a database |
       | Ruby | awesome programming language |
     And I am on the articles admin page
-    And I fill in "Search" with "ruby"
+    And I fill in "q" with "ruby"
     And I press "Search"
     Then I should see "Ruby"
     And I should not see "Mysql"
@@ -20,7 +20,7 @@ Feature: Fulltext search filter
       | Mysql | a database |
       | Ruby | awesome programming language |
     And I am on the articles admin page
-    And I fill in "Search" with "test"
+    And I fill in "q" with "test"
     And I press "Search"
     Then I should see "No matching articles found. List all articles."
 

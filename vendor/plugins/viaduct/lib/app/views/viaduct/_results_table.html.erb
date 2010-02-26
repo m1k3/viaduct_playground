@@ -20,6 +20,7 @@
       <% end %>
       </tbody>
     </table>
+    <%= render :partial => "viaduct/pagination" %>
     <% unless @definition.actions.empty? -%>
         <p>Action: <%= select("selected", "action", @definition.actions, {:include_blank => "----------"}) %> <%= submit_tag "Go" %></p>
     <% end %>
