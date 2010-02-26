@@ -16,6 +16,9 @@ module NavigationHelpers
 
     when /the people admin page/
       'people'
+      
+    when /the comments admin page/
+      'comments'
     
     when /the new person page/
       'people/new'

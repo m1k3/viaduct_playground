@@ -1,8 +1,9 @@
 <% @definition.model_class.reflect_on_all_associations(:belongs_to).each_with_index do |association, index| %>
 	<p>
-	  <%= f.label association.name.to_sym %><br />
+	  <%= label_tag "belongs_to_#{association.class_name}", association.class_name %><br />
 	  <div id="searchbox">
-        <%= text_field_tag "belongs_to_#{association.class_name}", @model.send(association.name.to_sym).send(@belongs_to_search_field.to_sym) if @model.send(association.name.to_sym) %>
+		<% belongs_to_value = @model.send(association.name.to_sym).send(@belongs_to_search_field.to_sym) if @model.send(association.name.to_sym) %>
+        <%= text_field_tag "belongs_to_#{association.class_name}", belongs_to_value %>
       </div>
 	  <div id="autocomplete_<%=index%>" class="autocomplete"></div>
       <script type="text/javascript">
