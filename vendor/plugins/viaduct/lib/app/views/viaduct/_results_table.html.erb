@@ -2,7 +2,7 @@
     <table>
       <thead>
       <tr>
-        <th></th>
+        <% unless @definition.actions.empty? %><th></th><% end %>
         <% for field in @definition.list_display %>
             <th><%= h field %></th>
         <% end %>
@@ -11,7 +11,9 @@
       <tbody>
       <% @models.each_with_index do |model, index| %>
           <tr>
-            <td id="<%= dom_id(model) %>"><%= check_box_tag("selected_models[]", model.id, false, {:id => "record_#{index}"}) %></td>
+            <% unless @definition.actions.empty? %>
+               <td id="<%= dom_id(model) %>"><%= check_box_tag("selected_models[]", model.id, false, {:id => "record_#{index}"}) %></td>
+            <% end %>
             <% for field in @definition.list_display %>
                 <td><%= h model.send(field) %></td>
             <% end %>
@@ -20,6 +22,7 @@
       <% end %>
       </tbody>
     </table>
+    <%= render :partial => "viaduct/pagination" %>
     <% unless @definition.actions.empty? -%>
         <p>Action: <%= select("selected", "action", @definition.actions, {:include_blank => "----------"}) %> <%= submit_tag "Go" %></p>
     <% end %>

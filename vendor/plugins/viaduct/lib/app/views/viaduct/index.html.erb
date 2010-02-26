@@ -1,6 +1,6 @@
 <% unless @definition.search_fields.empty? %>
     <% form_tag url_for(:action => "index"), :method => :get do -%>
-        <%= label_tag(:q, "Search") %>: <%= text_field_tag(:q, @query) %> <%= submit_tag "Search", {:name => nil} %>
+        <p><%= text_field_tag(:q, @query) %> <%= submit_tag "Search", {:name => nil} %></p>
     <% end %>
 <% end %>
 <% if @models.empty? %>

@@ -11,16 +11,21 @@ module Viaduct
     end
 
     def index
+      @page = 1
+      if /\d+/.match(params[:page])
+        @page = params[:page].to_i
+      end
       if !params[:q].blank?
         @query = params[:q]
-        @models = search(params[:q])      
+        @models = search(params[:q], @page)
       else
-        @models = model_class.all
+        @models = model_class.all(:offset => per_page * (@page - 1), :limit => per_page)
+        @models_count = model_class.count
       end
-
+      @total_pages = (@models_count.to_f / per_page).ceil
       render :template => 'viaduct/index'
     end
- 
+
     def new
       @model = model_class.new
       render :template => 'viaduct/new'
@@ -70,7 +75,7 @@ module Viaduct
     end
     
     def belongs_to_autocomplete
-      @matches = search(params[:query], params[:model].constantize, belongs_to_search_fields).first(7)
+      @matches = search(params[:query], 1,params[:model].constantize, belongs_to_search_fields).first(7)
       @belongs_to_search_fields = belongs_to_search_fields
       render :layout => false, :template => 'viaduct/autocomplete'
     end
@@ -98,28 +103,34 @@ module Viaduct
     def belongs_to_search_fields
       []
     end
+    
+    def per_page
+      20
+    end
 
     protected
-      def update_associations(model)
-        association_items = []
-        
-        model_class.reflect_on_all_associations(:has_many).each do |association|
-          association_items = association.klass.find(params["#{association.name}_ids".to_sym]) if params["#{association.name}_ids".to_sym]
-          model.send("#{association.name}=", association_items)
-        end
-        
-        model_class.reflect_on_all_associations(:belongs_to).each do |association|
-          association_item = association.klass.first(:conditions => {belongs_to_search_fields.first => params["belongs_to_#{association.class_name}"]})
-          model.send("#{association.name}=", association_item)
-        end
-        
-        model.save
+    def update_associations(model)
+      association_items = []
+
+      model_class.reflect_on_all_associations(:has_many).each do |association|
+        association_items = association.klass.find(params["#{association.name}_ids".to_sym]) if params["#{association.name}_ids".to_sym]
+        model.send("#{association.name}=", association_items)
       end
 
-      # generic search
-      def search(query, model = model_class, model_search_fields = search_fields)
-        condition = model_search_fields.map {|field| "`#{field}` LIKE :query"}.join(" OR ")
-        model.all(:conditions => [condition, {:query => "%#{query}%"}])
+      model_class.reflect_on_all_associations(:belongs_to).each do |association|
+        association_item = association.klass.first(:conditions => {belongs_to_search_fields.first => params["belongs_to_#{association.class_name}"]})
+        model.send("#{association.name}=", association_item)
       end
+
+      model.save
+    end
+
+    # generic search
+    def search(query, page, model = model_class, model_search_fields = search_fields)
+      condition = model_search_fields.map {|field| "`#{field}` LIKE :query"}.join(" OR ")
+      conditions = [condition, {:query => "%#{query}%"}]
+      @models_count = model.count(:conditions => conditions)                             
+      model.all(:conditions => conditions, :offset => (page - 1) * per_page, :limit => per_page)
+    end
   end
 end
