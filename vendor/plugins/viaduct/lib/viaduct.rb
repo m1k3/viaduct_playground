@@ -23,18 +23,18 @@ module Viaduct
         @models_count = model_class.count
       end
       @total_pages = (@models_count.to_f / per_page).ceil
-      render :template => 'viaduct/index'
+      render :template => 'viaduct/index', :layout => 'layouts/application'
     end
 
     def new
       @model = model_class.new
-      render :template => 'viaduct/new'
+      render :template => 'viaduct/new', :layout => 'layouts/application'
     end
 
     def edit
       @model = model_class.find(params[:id])
       @belongs_to_search_field = belongs_to_search_fields.first
-      render :template => 'viaduct/edit'
+      render :template => 'viaduct/edit', :layout => 'layouts/application'
     end
 
     def create
@@ -43,7 +43,7 @@ module Viaduct
         flash[:notice] = "#{model_class} was successfully created."
         redirect_to(:action => "index")
       else
-        render :template => 'viaduct/new'
+        render :template => 'viaduct/new', :layout => 'layouts/application'
       end
     end
 
@@ -53,7 +53,7 @@ module Viaduct
         flash[:notice] = "#{model_class} was successfully updated."
         redirect_to(:action => "index")
       else
-        render :template => 'viaduct/edit'
+        render :template => 'viaduct/edit', :layout => 'layouts/application'
       end
     end
 
