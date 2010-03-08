@@ -75,7 +75,14 @@ module Viaduct
     end
     
     def belongs_to_autocomplete
-      @matches = search(params[:query], 1,params[:model].constantize, belongs_to_search_fields).first(7)
+      belongs_to_model = params[:model].constantize
+      @matches = search(params[:query], 1,belongs_to_model, belongs_to_search_fields).first(7)
+      rescue
+      model_class.all_polymorphic_types(params[:model].downcase.to_sym).each do |belongs_to_model|
+        @matches ||= []
+        @matches << search(params[:query], 1,belongs_to_model, belongs_to_search_fields).first(7)
+      end
+      @matches.flatten!
       @belongs_to_search_fields = belongs_to_search_fields
       render :layout => false, :template => 'viaduct/autocomplete'
     end
@@ -101,7 +108,7 @@ module Viaduct
     end
     
     def belongs_to_search_fields
-      []
+      [:title]
     end
     
     def per_page
@@ -118,7 +125,13 @@ module Viaduct
       end
 
       model_class.reflect_on_all_associations(:belongs_to).each do |association|
-        association_item = association.klass.first(:conditions => {belongs_to_search_fields.first => params["belongs_to_#{association.class_name}"]})
+        unless association.options[:polymorphic]
+          association_item = association.klass.first(:conditions => {belongs_to_search_fields.first => params["belongs_to_#{association.class_name}"]})
+        else
+          model_class.all_polymorphic_types(association.name).each do |association_class|
+            break if association_item = association_class.first(:conditions => {belongs_to_search_fields.first => params["belongs_to_#{association.class_name}"]})
+          end
+        end
         model.send("#{association.name}=", association_item)
       end
 

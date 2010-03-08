@@ -4,5 +4,5 @@ class Person < ActiveRecord::Base
   attr_accessible :name, :address, :phone
   
   has_many :comments
-  #belongs_to :recording, :polymorphic => true
+  belongs_to :recording, :polymorphic => true
 end
