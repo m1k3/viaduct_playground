@@ -1,8 +1,7 @@
+.bundle
+db/*.sqlite3
+log/*
+tmp/**/*
 .DS_Store
 config/database.yml
-log/*.log
-tmp/
-doc/api
-doc/app
-rerun.txt
 .idea
