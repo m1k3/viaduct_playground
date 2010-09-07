@@ -1,7 +1,0 @@
-<ul>
-  <% @matches.each do |match| -%>
-      <% content_tag 'li' do -%>
-          <span class="select"><%= @belongs_to_search_fields.map{ |field| match.send(field)}.join(',') %></span>
-      <% end %>
-  <% end %>
-</ul>
